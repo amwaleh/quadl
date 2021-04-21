@@ -1,4 +1,4 @@
-const store = {
+export const store = {
 "dataset_data": {
 "limit": null,
 "transform": null,
