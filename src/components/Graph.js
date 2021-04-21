@@ -10,16 +10,9 @@ const values = dataRes.data.map(x => {
   console.log(new Date(x[0]), x[0])
   x[0]=new Date(x[0])
   return x
-}).splice(0,1500)
+}).splice(0,100)
 const data = [headers, ...values]
 
-const data2 = [
-  ["Year", "Sales", "Expenses"],
-  ["2004", 1000, 400],
-  ["2005", 1170, 460],
-  ["2006", 660, 1120],
-  ["2007", 1030, 540]
-];
 const options = {
   title: "Company Performance",
   curveType: "function",

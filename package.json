@@ -5,9 +5,12 @@
   },
   "description": "https://github.com/mui-org/material-ui/blob/master/docs/src/pages/components/drawers/MiniDrawer.js",
   "dependencies": {
+    "@date-io/date-fns": "2.10.8",
     "@material-ui/core": "latest",
     "@material-ui/icons": "latest",
+    "@material-ui/pickers": "3.3.10",
     "clsx": "latest",
+    "date-fns": "2.21.1",
     "react": "latest",
     "react-dom": "latest",
     "react-google-charts": "3.0.15"

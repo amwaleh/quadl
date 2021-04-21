@@ -18,6 +18,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import Chart from "./components/Graph";
+import Datebar from "./components/Datebar";
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -86,10 +88,14 @@ export default function MiniDrawer() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
 
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  }
   const handleDrawerOpen = () => {
     setOpen(true);
-  };
+  }
 
   const handleDrawerClose = () => {
     setOpen(false);
@@ -168,7 +174,8 @@ export default function MiniDrawer() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Chart />
+        <Datebar />
+        {/* <Chart /> */}
       </main>
     </div>
   );
