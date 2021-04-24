@@ -74,6 +74,8 @@ const HomePage = props => {
 
   const tickerResult = result => {
     setTickers(result)
+    setLoading(false)
+
   }
 
   const getEODStock = async company_code => {
@@ -158,6 +160,7 @@ const HomePage = props => {
   }
 
   useEffect(() => {
+    setLoading(true)
     tickers(tickerResult)
   }, [])
 
