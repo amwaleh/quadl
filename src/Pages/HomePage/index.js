@@ -12,6 +12,48 @@ import PropTypes from 'prop-types'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Paper from '@material-ui/core/Paper'
 import { useSnackbar } from 'notistack'
+import FormGroup from '@material-ui/core/FormGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Switch from '@material-ui/core/Switch'
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
+import { withStyles } from '@material-ui/core/styles'
+
+
+const AntSwitch = withStyles(theme => ({
+  root: {
+    width: 28,
+    height: 16,
+    padding: 0,
+    display: 'flex'
+  },
+  switchBase: {
+    padding: 2,
+    color: theme.palette.grey[500],
+    '&$checked': {
+      transform: 'translateX(12px)',
+      color: theme.palette.common.white,
+      '& + $track': {
+        opacity: 1,
+        backgroundColor: theme.palette.primary.main,
+        borderColor: theme.palette.primary.main
+      }
+    }
+  },
+  thumb: {
+    width: 12,
+    height: 12,
+    boxShadow: 'none'
+  },
+  track: {
+    border: `1px solid ${theme.palette.grey[500]}`,
+    borderRadius: 16 / 2,
+    opacity: 1,
+    backgroundColor: theme.palette.common.white
+  },
+  checked: {}
+}))(Switch)
+
 
 const HomePage = props => {
   const [loading, setLoading] = React.useState(false)
@@ -24,6 +66,11 @@ const HomePage = props => {
   const [company, setCompany] = React.useState()
   const [tickerData, setTickers] = React.useState()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+  const [page, setPage] = React.useState(0)
+
+  const handlePage = (event, newValue) => {
+    setPage(newValue)
+  }
 
   const tickerResult = result => {
     setTickers(result)
@@ -39,8 +86,9 @@ const HomePage = props => {
       setData(res.data)
       setCompany(company_code)
       setLoading(false)
-      setValues({ ...values, start: start_date })
+
     } catch (error) {
+
       setLoading(false)
       const message =
         error?.response?.data.quandl_error.message || error.message
@@ -59,7 +107,7 @@ const HomePage = props => {
       const res = await getQuandlFutures(params)
       setData(res.data)
       setLoading(false)
-      setValues({ ...values, start: start_date })
+
     } catch (error) {
       setLoading(false)
       const message =
@@ -68,11 +116,13 @@ const HomePage = props => {
       setError(error.message)
     }
   }
+
   const handleSelect = val => {
     setLoading(true)
     console.log({ val })
     getEODStock(val)
   }
+
   const handleSubmit = () => {
     setLoading(true)
     console.log({ values })
@@ -83,19 +133,28 @@ const HomePage = props => {
       getEODStock(values.company)
     }
   }
+
   const handleChange = e => {
     const { name, value } = e.target
     setValues({ ...values, [name]: value })
     console.log(values)
   }
+
   const handleShowStocks = show => {
     setShowStocks(show)
     setShowIntro(false)
   }
+
   const handleShowFutures = show => {
     setShowFutures(show)
+    setValues({...values, company:null})
     setShowIntro(false)
     fetchFuture()
+  }
+
+  const handlePageChange = () => {
+    handleShowFutures(!showFutures)
+    handleShowStocks(showFutures)
   }
 
   useEffect(() => {
@@ -104,12 +163,14 @@ const HomePage = props => {
 
   return (
     <Layout>
+
       <Grid
         item
         container
         xs={12}
-        justify={showStocks & ! values.company ? 'center': 'space-between'}
+        justify={showStocks & !values.company ? 'center' : 'space-between'}
         style={{ marginBottom: '2em' }}
+        alignItems='center'
       >
         {showIntro && (
           <Grid container justify='center' xs={12}>
@@ -121,7 +182,7 @@ const HomePage = props => {
         )}
 
         {tickerData && showStocks && (
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={!values.company ? 8 : 4}>
             <Autocomplete
               data={tickerData}
               onChange={handleChange}
@@ -130,16 +191,48 @@ const HomePage = props => {
             />
           </Grid>
         )}
-          {(showFutures || values.company) && (
-        <Grid item xs={12} md={8}>
+        {(showFutures || values.company) && (
+          <Grid item xs={12} md={8}>
             <Datebar
               onChange={handleChange}
               values={values}
               onClick={handleSubmit}
             />
-        </Grid>
-          )}
+          </Grid>
+        )}
       </Grid>
+{
+  !showIntro && (
+    <Grid
+      container
+      item
+      xs={12}
+      md={12}
+      justify={values.company || showFutures ? 'start' : 'start'}
+    >
+      <FormGroup row>
+        <Typography component='div'>
+          <Grid component='label' container alignItems='center' spacing={3}>
+            <Grid item >Stocks{'  '} </Grid>
+            <Grid item>
+
+                  <AntSwitch
+                    checked={showFutures}
+                    onChange={handlePageChange}
+                    name='checkedA'
+                  />
+
+            </Grid>
+
+            <Grid item > Futures </Grid>
+
+
+          </Grid>
+        </Typography>
+      </FormGroup>
+    </Grid>
+  )
+}
 
       <Grid item xs={12}>
         <Typography variant='subtitle1' gutterBottom style={{ color: 'red' }}>

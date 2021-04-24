@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button'
 
 export default function DatePickers (props) {
   return (
-    <Grid container item spacing={2} justify='center' xs={12}>
+    <Grid container item spacing={2} justify='center' xs={12} style={{paddingTop: "10px"}}>
       {/* <Grid container item xs={12} md={6} justify='space-between'> */}
 
         <Grid item xs={12} md={3}>
@@ -16,7 +16,7 @@ export default function DatePickers (props) {
             type='date'
             name='start'
             variant = 'outlined'
-            value={props.values['start']||'1970'}
+            value={props.values['start']}
             onChange={props.onChange}
             InputLabelProps={{
               shrink: true
