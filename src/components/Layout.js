@@ -20,6 +20,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox'
 import MailIcon from '@material-ui/icons/Mail'
 import TimelineIcon from '@material-ui/icons/Timeline'
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance'
+import Box from '@material-ui/core/Box'
 
 
 // import Chart from './components/Graph'
@@ -131,9 +132,10 @@ export default function MiniDrawer (props) {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer
+      <Box
+      // component={Drawer}
         variant='permanent'
-        className={clsx(classes.drawer, {
+        className={clsx(classes.Grid, {
           [classes.drawerOpen]: open,
           [classes.drawerClose]: !open
         })}
@@ -143,6 +145,8 @@ export default function MiniDrawer (props) {
             [classes.drawerClose]: !open
           })
         }}
+        display={{xs:'none'}}
+        xs={0}
       >
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawerClose}>
@@ -157,7 +161,7 @@ export default function MiniDrawer (props) {
         <Grid  style={{minHeight:"200px"}}/>
         <Divider />
 
-      </Drawer>
+      </Box>
 
       <Grid container justify='center' className={classes.content}>
         <div className={classes.toolbar} />
